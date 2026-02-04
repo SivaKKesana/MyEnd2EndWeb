@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MyASPNETCoreAPI.DataAccess;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -105,6 +107,10 @@ builder.Services.AddSwaggerGen(c =>
     };
     c.AddSecurityRequirement(new OpenApiSecurityRequirement { [ bearerScheme ] = new string[] { } });
 });
+
+// Register DbContext (SQL Server)
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
